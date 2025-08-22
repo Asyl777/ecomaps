@@ -108,9 +108,11 @@ document.addEventListener('DOMContentLoaded', function () {
     return currentValue + 1;
   }).then(function(transactionResult) {
     if (transactionResult.committed) {
-      const newCount = transactionResult.snapshot.val();
-      // Выбираем номер на основе четности глобального счетчика
-      const url = numbers[newCount % numbers.length];
+      const newCount = transactionResult.snapshot.val(); // Это значение для СЛЕДУЮЩЕГО пользователя
+      const currentCount = newCount > 0 ? newCount - 1 : 0; // А это значение для ТЕКУЩЕГО пользователя
+      
+      // Выбираем номер на основе четности ТЕКУЩЕГО значения счетчика
+      const url = numbers[currentCount % numbers.length];
       performRedirect(url);
     } else {
       // Транзакция не удалась, используем номер по умолчанию
@@ -141,7 +143,7 @@ document.addEventListener('DOMContentLoaded', function () {
     // Задержка и перенаправление
     setTimeout(function () {
       window.location.href = url;
-    }, 800);
+    }, 10); // 0.01 секунды
   }
 
   // --- КОНЕЦ ЛОГИКИ FIREBASE ---
