@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Redirect</title>
+<script>
+const numbers = [
+  "https://wa.me/77064076625", 
+  "https://wa.me/77066756400"
+];
+
+let clickCount = localStorage.getItem('wa_click') || 0;
+const url = numbers[clickCount % numbers.length];
+localStorage.setItem('wa_click', parseInt(clickCount) + 1);
+
+window.location.href = url;
+</script>
+</head>
+<body>Redirecting...</body>
+</html>
