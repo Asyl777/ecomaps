@@ -3,6 +3,27 @@
 <head>
 <meta charset="UTF-8">
 <title>Redirect</title>
+
+<!-- Счетчик Яндекс.Метрики -->
+<script type="text/javascript">
+(function(m,e,t,r,i,k,a){
+    m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+    m[i].l=1*new Date();
+    for (var j=0;j<document.scripts.length;j++){
+        if (document.scripts[j].src===r){return;}
+    }
+    k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+})(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+ym(ВАШ_ID, "init", {
+    clickmap:true,
+    trackLinks:true,
+    accurateTrackBounce:true
+});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/ВАШ_ID" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- Конец счетчика -->
+
 <script>
 const numbers = [
   "https://wa.me/77064299895", 
@@ -12,6 +33,9 @@ const numbers = [
 let clickCount = localStorage.getItem('wa_click') || 0;
 const url = numbers[clickCount % numbers.length];
 localStorage.setItem('wa_click', parseInt(clickCount) + 1);
+
+// Отправляем событие в Метрику
+ym(ВАШ_ID, "reachGoal", "redirect_click");
 
 window.location.href = url;
 </script>
