@@ -4,37 +4,65 @@
 <meta charset="UTF-8">
 <title>Redirect</title>
 
-<!-- Код Метрики -->
-<script type="text/javascript" >
-   (function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
-   m[i].l=1*new Date();
-   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
-   (window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+    (function(m,e,t,r,i,k,a){
+        m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+        m[i].l=1*new Date();
+        for (var j = 0; j < document.scripts.length; j++) { if (document.scripts[j].src === r) { return; } }
+        k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
+    })(window, document,'script','https://mc.yandex.ru/metrika/tag.js?id=103848088', 'ym');
 
-   ym(12345678, "init", {
+    ym(103848088, 'init', {
+        ssr:true,
+        webvisor:true,
         clickmap:true,
-        trackLinks:true,
-        accurateTrackBounce:true
-   });
+        ecommerce:"dataLayer",
+        accurateTrackBounce:true,
+        trackLinks:true
+    });
 </script>
-<noscript><div><img src="https://mc.yandex.ru/watch/12345678" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
-<!-- /Код Метрики -->
+<noscript><div><img src="https://mc.yandex.ru/watch/103848088" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
 
 <script>
-const numbers = [
-  "https://wa.me/77064299895", 
-  "https://wa.me/77762979276"
-];
+document.addEventListener('DOMContentLoaded', function () {
+  const numbers = [
+    "https://wa.me/77064299895",
+    "https://wa.me/77762979276"
+  ];
 
-let clickCount = localStorage.getItem('wa_click') || 0;
-const url = numbers[clickCount % numbers.length];
-localStorage.setItem('wa_click', parseInt(clickCount) + 1);
+  const raw = localStorage.getItem('wa_click') || '0';
+  const clickCount = parseInt(raw, 10) || 0;
+  const url = numbers[clickCount % numbers.length];
+  localStorage.setItem('wa_click', String(clickCount + 1));
 
-// задержка перед редиректом (1 секунда)
-setTimeout(() => {
-  window.location.href = url;
-}, 1000);
+  // Отправим цель в Метрику (параметром передаём куда редиректим)
+  try {
+    if (typeof ym === 'function') {
+      ym(103848088, 'reachGoal', 'redirect', { to: url });
+    }
+  } catch (e) {}
+
+  // Дадим метрике время загрузиться и отправить хит
+  setTimeout(function () {
+    window.location.href = url;
+  }, 1500); // 1.5 c — можно уменьшить до 800–1000 мс, если нужно быстрее
+});
 </script>
 </head>
-<body>Redirecting...</body>
+<body>
+Redirecting... Если редирект не сработал, <a href="https://wa.me/77064299895" id="fallback" rel="nofollow noopener noreferrer">нажмите сюда</a>.
+<script>
+// Подменим ссылку fallback на фактический url
+(function(){
+  const raw = localStorage.getItem('wa_click') || '1';
+  const prevCount = (parseInt(raw, 10) || 1) - 1; // предыдущий выбор
+  const idx = ((prevCount % 2) + 2) % 2;
+  const lastUrl = ["https://wa.me/77064299895","https://wa.me/77762979276"][idx];
+  var a = document.getElementById('fallback');
+  if (a) a.href = lastUrl;
+})();
+</script>
+</body>
 </html>
